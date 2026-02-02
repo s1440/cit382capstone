@@ -66,3 +66,62 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* this is for the login popup */
+/* Dark background overlay */
+/*top, left, width, height fixes it in place*/
+/*z-index: 1000; controls stacking order, it puts the black on the top of everything else*/
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* White popup box */
+.popup-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 350px;
+  max-width: 90%;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.image{
+  width: 350px;
+}
+
+.post-card{
+    width: 500px;
+    height: 500px;
+    background-color: #e8e8e8; /* Light gray background */
+    color: #333;                /* Text color */
+    padding: 4px 8px;           /* Spacing inside the bubble */
+    border-radius: 5px;        /* Makes it rounded/bubble-like */
+     box-sizing: border-box;
+}
+

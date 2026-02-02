@@ -11,7 +11,7 @@ export default function AppNavbar({ onLoginClick }) {
   return (
     <Navbar fixed="top" expand="lg" bg="light">
       <Container fluid>
-        <Navbar.Brand href="/">My Capstone</Navbar.Brand>
+        <Navbar.Brand href="/">Cookn' Share</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
           <Nav className="me-auto">
