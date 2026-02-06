@@ -7,6 +7,7 @@ import React from "react";
 function PopUp({ showPopUp, closePopUp, children }) {
   if (!showPopUp) return null;
 
+
   return (
     //popup-overlay makes the background dark
     //onClick-{closePopup} makes so if you click outside ethe box it closes the popup
