@@ -35,3 +35,15 @@ PopUp.jsx → owns modal display - shows/ hides model
 -blocks background clicks
 -renders - no login logic
 -no state
+
+Flow:
+
+User types → setName
+
+Component re-renders
+
+useEffect runs because name changed
+
+Browser tab title updates
+
+➡️ State causes effects, not the other way around

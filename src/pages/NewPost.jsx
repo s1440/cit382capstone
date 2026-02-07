@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 //creates react componet and makes it the default export
 //receives setposts fromm App.jsx
-function NewPost({ setPosts }) {
+function NewPost({ setPosts, currentUser }) {
     //title stores the input value
     //starts as an emptry string and setTitle updates the value
     //this controls the title input field
@@ -23,9 +23,10 @@ function NewPost({ setPosts }) {
     const newPost = {
       id: Date.now(),
       title,
-      body
+      body,
+      author: currentUser || "Unknown",
     };
-
+    
     //adds the new post to the array and triggers a re-render everywhere
     //setPosts is the state updater function created by useState
     //(prev) => is the previous state of posts
@@ -33,8 +34,10 @@ function NewPost({ setPosts }) {
     // [ ...prev, newPost ] = a new array with everything in prev, plus newPost at the end.
     setPosts((prev) => [...prev, newPost]);
     //sends the user back to the feed
-    navigate("/");
+    navigate("/feed");
   }
+
+    
 
   return (
     //handles submit logic and allows enter key submission
@@ -77,6 +80,7 @@ function NewPost({ setPosts }) {
       <button>Create</button>
     </form>
   );
+
 }
 
 export default NewPost;

@@ -78,3 +78,18 @@ img.enlarged {
   margin: 8px 0;
   font-weight: bold;
 }
+
+.navText {
+  display: "flex";
+  gap: "12px";
+  align-items: center;
+  
+}
+
+.login-status{
+  margin-right: 12px; /* space between text and button */
+  color: #6c757d;     /* optional gray like muted */
+  font-size: 0.875rem;/* optional small text */
+  white-space: nowrap; /* prevent wrapping */
+
+}

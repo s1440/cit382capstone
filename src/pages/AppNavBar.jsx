@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 
-export default function AppNavbar({ onLoginClick }) {
+export default function AppNavbar({ onLoginClick, onLogout, isLoggedIn, currentUser }) {
   return (
     <Navbar fixed="top" expand="lg" bg="light">
       <Container fluid>
@@ -15,10 +15,14 @@ export default function AppNavbar({ onLoginClick }) {
             <Nav.Link href="/create">Create Post</Nav.Link>
             <Nav.Link href="/feed">Feed</Nav.Link>
             <Nav.Link href="/profile">Profile</Nav.Link>
-          </Nav>
+             </Nav>
+            {/* Show status next to button */}
+          <span className="login-status">
+              {isLoggedIn ? `Welcome, ${currentUser}!` : "You are not logged in"}
+            </span>
           {/* Login button on the right */}
-          <Button variant="primary" onClick={onLoginClick}>
-            Login
+          <Button variant="primary" onClick={isLoggedIn ? onLogout : onLoginClick}>
+            {isLoggedIn ? "Logout" : "Login"}
           </Button>
         </Navbar.Collapse>
       </Container>
