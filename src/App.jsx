@@ -3,25 +3,14 @@ import AppNavBar from "./pages/AppNavBar";
 //youtube video
 //when the URL is '/' then render the home component and everything in home.jsx will appear
 import Home from "./pages/Home";
-<<<<<<< HEAD
 //for popUp
-import React, { useState, useEffect } from 'react';
-import PopUp from './pages/PopUp';
-import './index.css';
+import React, { useState, useEffect } from "react";
+import PopUp from "./pages/PopUp";
+import "./index.css";
 import ListView from "./pages/ListView";
 import NewPost from "./pages/NewPost";
 import DetailView from "./pages/DetailView";
-
-=======
-import Profile from "./pages/profiles";
-
-//for popUp
-import React, { useState } from "react";
-import PopUp from "./pages/PopUp";
-import "./index.css";
->>>>>>> a128f804dc4253b6a2d5713ff3f7a0a4975d364a
-
-import NewEntryView from "./NewEntryView";
+import Profile from "./pages/profiles.jsx";
 
 function CreatePost() {
   return <h2>Create Post</h2>;
@@ -33,100 +22,125 @@ function Feed() {
 
 //Nav Bar infomation
 function App() {
-<<<<<<< HEAD
   //this creates a state called posts, initializes it as an emtry array and this is array will store all user-created posts
   // const posts = current statue value. Is all posts on the site
   // const setPosts = function to update it. setPosts is posted added, deleted or edited
-   const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [postsLoaded, setPostsLoaded] = useState(false);
 
-
-   //useEffct runs things react doesn't do automatically (load and save data) 
-   useEffect (() => {
+  //useEffct runs things react doesn't do automatically (load and save data)
+  useEffect(() => {
     //localStorage stores data user key "post"
     //JSON sovers thing back to JS value
-    // || [] prevents crash 
+    // || [] prevents crash
     const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
     //updates react state
     setPosts(savedPosts);
-   }, []);
-   //this saves the posts 
-   useEffect (() => {
-    localStorage.setItem("posts", JSON.stringify(posts));
-   
-   }, [posts]);
+    setPostsLoaded(true);
+  }, []);
 
+  //this saves the username
+  useEffect(() => {
+    if (!user) return;
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
 
-=======
->>>>>>> a128f804dc4253b6a2d5713ff3f7a0a4975d364a
+  //this loads the username
+  useEffect(() => {
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    if (savedUser) setUser(savedUser);
+  }, []);
+
   // Login button set as true
   // this state lives in app.jsx
   const [showPopUp, setShowPopUp] = useState(false);
+
+  //this saves the posts
+  useEffect(() => {
+    if (!postsLoaded) return;
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts, postsLoaded]);
+
+  function handleLogin() {
+    const email = loginEmail.trim();
+    if (!email.includes("@")) return;
+
+    const name = email.split("@")[0];
+    setUser({ email, name });
+
+    setShowPopUp(false);
+    setLoginEmail("");
+    setLoginPassword("");
+  }
+
+  function addPost({ title, body }) {
+    if (!user) return;
+
+    const newPost = {
+      id: Date.now(),
+      title,
+      body,
+      author: user.name,
+    };
+
+    setPosts((prev) => [...prev, newPost]);
+  }
+
+  function deletePost(id) {
+    setPosts((prev) => prev.filter((p) => p.id !== id));
+  }
 
   return (
     <BrowserRouter>
       {/* Navbar with login trigger */}
       <AppNavBar onLoginClick={() => setShowPopUp(true)} />
 
-<<<<<<< HEAD
-        {/* Login Popup */}
-        {/*everything in PopUp becomes 'childern' automatically */}
-        <PopUp
-          showPopUp={showPopUp}
-          //passing a function into Popup that when called will hide the popup
-          closePopUp={() => setShowPopUp(false)}
-        >
-          <div className="popup-box">
-            <input placeholder="Email" />
-            <input placeholder="Password" type="password" />
-            <button>Login</button>
-          </div>
-        </PopUp>
-
-        <Routes>
-          <Route path="/feed" element={<ListView posts={posts} />} />
-          <Route path="/new" element={<NewPost setPosts={setPosts} />} />
-          <Route
-          path="/post/:id"
-          element={<DetailView posts={posts} setPosts={setPosts} />}
-        />
-          <Route path="/" element={<Home />} />
-          <Route path="/create" element={<CreatePost />} />
-          <Route path="/feed" element={<Feed />} />
-        </Routes>
-      </BrowserRouter>
-    
-=======
       {/* Login Popup */}
-      <PopUp showPopUp={showPopUp} closePopUp={() => setShowPopUp(false)}>
-        <h2>Login</h2>
-        <input placeholder="Email" />
-        <input placeholder="Password" type="password" />
-        <button>Login</button>
+      {/*everything in PopUp becomes 'childern' automatically */}
+      <PopUp
+        showPopUp={showPopUp}
+        //passing a function into Popup that when called will hide the popup
+        closePopUp={() => setShowPopUp(false)}
+      >
+        <div className="popup-box">
+          <input
+            placeholder="Email"
+            value={loginEmail}
+            onChange={(e) => setLoginEmail(e.target.value)}
+          />
+
+          <input
+            placeholder="Password"
+            type="password"
+            value={loginPassword}
+            onChange={(e) => setLoginPassword(e.target.value)}
+          />
+
+          <button onClick={handleLogin}>Login</button>
+        </div>
       </PopUp>
 
       <Routes>
-        {/* This variable controls which part of the UI is visible: */}
-        <Route path="/" element={<Home />} />
-        <Route path="/create" element={<CreatePost />} />
-        <Route path="/feed" element={<Feed />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-      {/* {showPopUp === "new" && (
-        <div>
-          <h2>New Entry View</h2>
-        </div>
-      )}
+        <Route path="/feed" element={<ListView posts={posts} />} />
 
-      {showPopUp === "list" && (
-        <div>
-          <h2>List View</h2>
-        </div>
-      )}
-      <button onClick={() => setShowPopUp("new")}>New</button>
-      <button onClick={() => setShowPopUp("list")}>List</button> */}
-      {/* When the view changes, this data persists: everything except for: the words above the buttons "List View" and "New Entry View"*/}
+        <Route
+          path="/post/:id"
+          element={<DetailView posts={posts} onDeletePost={deletePost} />}
+        />
+
+        <Route path="/" element={<Home />} />
+        <Route path="/create" element={<NewPost onAddPost={addPost} />} />
+        <Route
+          path="/profile"
+          element={
+            <Profile user={user} posts={posts} onDeletePost={deletePost} />
+          }
+        />
+      </Routes>
     </BrowserRouter>
->>>>>>> a128f804dc4253b6a2d5713ff3f7a0a4975d364a
   );
 }
 

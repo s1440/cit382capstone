@@ -24,11 +24,11 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
+
+
 
 h1 {
   font-size: 3.2em;
@@ -125,3 +125,48 @@ button:focus-visible {
      box-sizing: border-box;
 }
 
+.profile-container {
+  margin-top: 80px;            /* pushes below navbar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;         /* ← centers horizontally */
+}
+
+.profile-page {
+  margin-top: 80px; /* below fixed navbar */
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+.profile-stats {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.profile-section-title {
+  margin-top: 24px;
+}
+
+.profile-posts {
+  margin-top: 12px;
+  text-align: left;
+}
+
+.profile-post {
+  margin-bottom: 14px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.profile-post-body {
+  margin-top: 6px;
+}
