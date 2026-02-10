@@ -24,7 +24,9 @@ function App() {
   // Load posts once
   useEffect(() => {
     const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPosts(savedPosts);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPostsLoaded(true);
   }, []);
 
