@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 
 // {posts} is coming from <ListView posts = {posts} /> that is a lifted state from App.jsx
-function ListView({ posts }) {
+function ListView({ posts, setPosts, currentUser}) {
+
+  const handleDelete = (id) => {
+    setPosts(prev => prev.filter(post => post.id !== id));
+
+  };
   return (
     <div>
       <h1>Posts</h1>
@@ -20,6 +25,10 @@ function ListView({ posts }) {
           <Link to={`/post/${post.id}`}>
             <h3>{post.title}</h3>
           </Link>
+          {/*shows delete button only if logged in user is the author */}
+          {currentUser == post.author && (
+          <button onClick={() => handleDelete(post.id)}> Delete</button>
+          )}
         </div>
       ))}
     </div>

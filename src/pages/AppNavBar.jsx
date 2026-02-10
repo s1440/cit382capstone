@@ -25,6 +25,7 @@ export default function AppNavbar({ onLoginClick }) {
               Profile
             </Nav.Link>
           </Nav>
+
           {/* Login button on the right */}
           <Button variant="primary" onClick={onLoginClick}>
             Login

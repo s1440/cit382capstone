@@ -1,68 +1,50 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AppNavBar from "./pages/AppNavBar";
-//youtube video
-//when the URL is '/' then render the home component and everything in home.jsx will appear
-import Home from "./pages/Home";
-//for popUp
 import React, { useState, useEffect } from "react";
-import PopUp from "./pages/PopUp";
-import "./index.css";
-import ListView from "./pages/ListView";
-import NewPost from "./pages/NewPost";
-import DetailView from "./pages/DetailView";
+
+import AppNavBar from "./pages/AppNavBar.jsx";
+import Home from "./pages/Home.jsx";
+import PopUp from "./pages/PopUp.jsx";
+import ListView from "./pages/ListView.jsx";
+import NewPost from "./pages/NewPost.jsx";
+import DetailView from "./pages/DetailView.jsx";
 import Profile from "./pages/profiles.jsx";
 
-function CreatePost() {
-  return <h2>Create Post</h2>;
-}
+import "./index.css";
 
-function Feed() {
-  return <h2>Feed</h2>;
-}
-
-//Nav Bar infomation
 function App() {
-  //this creates a state called posts, initializes it as an emtry array and this is array will store all user-created posts
-  // const posts = current statue value. Is all posts on the site
-  // const setPosts = function to update it. setPosts is posted added, deleted or edited
   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState(null);
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
   const [postsLoaded, setPostsLoaded] = useState(false);
 
-  //useEffct runs things react doesn't do automatically (load and save data)
+  const [user, setUser] = useState(null); // { email, name }
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const [showPopUp, setShowPopUp] = useState(false);
+
+  // Load posts once
   useEffect(() => {
-    //localStorage stores data user key "post"
-    //JSON sovers thing back to JS value
-    // || [] prevents crash
     const savedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    //updates react state
     setPosts(savedPosts);
     setPostsLoaded(true);
   }, []);
 
-  //this saves the username
+  // Save posts after initial load
   useEffect(() => {
-    if (!user) return;
-    localStorage.setItem("user", JSON.stringify(user));
-  }, [user]);
+    if (!postsLoaded) return;
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts, postsLoaded]);
 
-  //this loads the username
+  // Load user once
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem("user"));
     if (savedUser) setUser(savedUser);
   }, []);
 
-  // Login button set as true
-  // this state lives in app.jsx
-  const [showPopUp, setShowPopUp] = useState(false);
-
-  //this saves the posts
+  // Save user when it changes (but don’t overwrite with null)
   useEffect(() => {
-    if (!postsLoaded) return;
-    localStorage.setItem("posts", JSON.stringify(posts));
-  }, [posts, postsLoaded]);
+    if (!user) return;
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
 
   function handleLogin() {
     const email = loginEmail.trim();
@@ -77,13 +59,13 @@ function App() {
   }
 
   function addPost({ title, body }) {
-    if (!user) return;
+    const author = user?.name ?? "Guest";
 
     const newPost = {
       id: Date.now(),
       title,
       body,
-      author: user.name,
+      author,
     };
 
     setPosts((prev) => [...prev, newPost]);
@@ -95,16 +77,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      {/* Navbar with login trigger */}
       <AppNavBar onLoginClick={() => setShowPopUp(true)} />
 
-      {/* Login Popup */}
-      {/*everything in PopUp becomes 'childern' automatically */}
-      <PopUp
-        showPopUp={showPopUp}
-        //passing a function into Popup that when called will hide the popup
-        closePopUp={() => setShowPopUp(false)}
-      >
+      <PopUp showPopUp={showPopUp} closePopUp={() => setShowPopUp(false)}>
         <div className="popup-box">
           <input
             placeholder="Email"
@@ -124,15 +99,13 @@ function App() {
       </PopUp>
 
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/feed" element={<ListView posts={posts} />} />
-
+        <Route path="/create" element={<NewPost onAddPost={addPost} />} />
         <Route
           path="/post/:id"
           element={<DetailView posts={posts} onDeletePost={deletePost} />}
         />
-
-        <Route path="/" element={<Home />} />
-        <Route path="/create" element={<NewPost onAddPost={addPost} />} />
         <Route
           path="/profile"
           element={
@@ -145,22 +118,3 @@ function App() {
 }
 
 export default App;
-
-/*
-Observations:
-- Data that persisted across views: Everything except for the words above the buttons "List View" and "New View"
-- Data that reset when views changed: The words above the buttons "List View" and "New View"
-*/
-
-/*
-Possible future side effects in this app:
-- Something that should happen when a view appears: It should load all of the previous entries.
-- Something that should happen when data changes: Update a list when a new entry is added
-*/
-
-/*
-Reflection:
-- One thing that surprised me about switching views: It is a lot simpler than I thought it would be. 
-- One thing that felt confusing: making the NewEntryView.jsx was confusing as I wasn't exactly sure what to add at first
-- One question I have about how React manages data: I am honeslty still confused on what needs to be taken off app.jsx after adding NewEntryView.jsx
-*/
