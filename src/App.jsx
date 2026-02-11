@@ -19,6 +19,55 @@ function App() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
+<<<<<<< Updated upstream
+=======
+
+   //App level state to track whether a user is logged in
+   const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem("isLoggedIn") === "true";
+   });
+   // stores who is logged in 
+   //is loggedin only tells true/false, currentUser tells us which user
+   //when the login form is submitted setCurrentUser tells the app "this is an active user now"
+   const [currentUser, setCurrentUser] = useState(() => {
+    return localStorage.getItem("currentUser");
+   });
+
+   // callback passed to login form
+   const handleLogin = (username, password) => {
+    if (!username || !password) return; 
+      setIsLoggedIn(true); // mark user as logged in
+      setCurrentUser(username); //store who is logged in
+      // remember login
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("currentUser", username);
+
+      //close popup
+      setShowPopUp(false);
+   };
+
+  // Called when the user clicks "Logout"
+  const handleLogout = () => {
+    // Clear React state
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+
+    // Remove persisted login data
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("currentUser");
+  };
+
+  //only runs when posts are changed
+  //ex: add delete, edit
+  //useEffct runs things react doesn't do automatically (load and save data) 
+  useEffect(() => {
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts]);
+ 
+
+  // Login button set as true
+  // this state lives in app.jsx
+>>>>>>> Stashed changes
   const [showPopUp, setShowPopUp] = useState(false);
 
   // Load posts once
