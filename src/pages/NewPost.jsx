@@ -14,23 +14,25 @@ function NewPost({ onAddPost }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>New Post</h2>
+    <div className="newpost-page">
+      <form className="newpost-form" onSubmit={handleSubmit}>
+        <h2>Create Post</h2>
 
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
-      />
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title"
+        />
 
-      <textarea
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-        placeholder="Write your post..."
-      />
+        <textarea
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          placeholder="Write your post..."
+        />
 
-      <button>Create</button>
-    </form>
+        <button>Create</button>
+      </form>
+    </div>
   );
 }
 

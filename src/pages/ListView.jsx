@@ -1,36 +1,33 @@
 import { Link } from "react-router-dom";
 
-// {posts} is coming from <ListView posts = {posts} /> that is a lifted state from App.jsx
-function ListView({ posts, setPosts, currentUser}) {
-
+function ListView({ posts, setPosts, currentUser }) {
   const handleDelete = (id) => {
-    setPosts(prev => prev.filter(post => post.id !== id));
-
+    setPosts((prev) => prev.filter((post) => post.id !== id));
   };
-  return (
-    <div>
-      <h1>Posts</h1>
-      {/* clicking on this changes the URL to /new. React router renders the NewPost view*/}
 
-      {/*this renders the posts list. Loops over the post array and creates a UI for each post. Map returns JSX (not just data)
-        ex:
-        posts = [
-            { id: 1, title: "Hello" },
-            { id: 2, title: "World" }
-        ]
- */}
-      {posts.map((post) => (
-        //track list items
-        <div key={post.id}>
-          <Link to={`/post/${post.id}`}>
-            <h3>{post.title}</h3>
-          </Link>
-          {/*shows delete button only if logged in user is the author */}
-          {currentUser == post.author && (
-          <button onClick={() => handleDelete(post.id)}> Delete</button>
-          )}
+  return (
+    <div className="listview-page">
+      <div className="profile-card">
+        <h3 className="profile-section-title">Posts</h3>
+
+        <div className="profile-posts">
+          {posts.map((post) => (
+            <div key={post.id} className="profile-post">
+              <Link to={`/post/${post.id}`}>
+                <strong>{post.title}</strong>
+              </Link>
+
+              <div className="feed-author">By {post.author ?? "Unknown"}</div>
+
+              <div className="profile-post-body">{post.body}</div>
+
+              {currentUser === post.author && (
+                <button onClick={() => handleDelete(post.id)}>Delete</button>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
