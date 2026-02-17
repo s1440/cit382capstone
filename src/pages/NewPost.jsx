@@ -1,15 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function NewPost({ onAddPost }) {
+function NewPost({ onAddPost, user }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const navigate = useNavigate();
+  const [link, setLink] = useState("");
+  const [image, setImage] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    onAddPost({ title, body });
+    if (!user) {
+      alert("Please log in first.");
+      return;
+    }
+
+    if (!title.trim() || !body.trim()) {
+      alert("Please fill out both fields.");
+      return;
+    }
+
+    onAddPost({ title, body, link, image });
+
     navigate("/profile");
   }
 
@@ -28,6 +41,17 @@ function NewPost({ onAddPost }) {
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="Write your post..."
+        />
+        <input
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="Optional recipe link"
+        />
+
+        <input
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          placeholder="Optional image URL"
         />
 
         <button>Create</button>

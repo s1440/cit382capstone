@@ -1,72 +1,103 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function DetailView({ posts, setPosts }) {
   const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isEditMode = new URLSearchParams(location.search).get("edit") === "1";
+
   const [post, setPost] = useState(null);
-
-  // NEW: edit-mode state + draft body
-  const [isEditing, setIsEditing] = useState(false);
   const [draftBody, setDraftBody] = useState("");
+  const [draftLink, setDraftLink] = useState("");
+  const [draftImage, setDraftImage] = useState("");
 
-  // Load data when view appears
   useEffect(() => {
     const foundPost = posts.find((p) => p.id === Number(id));
     setPost(foundPost);
-
     if (foundPost) {
-      setDraftBody(foundPost.body);
-      setIsEditing(false);
+      setDraftBody(foundPost.body ?? "");
+      setDraftLink(foundPost.link ?? "");
+      setDraftImage(foundPost.image ?? "");
     }
   }, [id, posts]);
 
-  // NEW: only update draft while typing
-  function handleDraftChange(e) {
-    setDraftBody(e.target.value);
-  }
+  if (!post) return <p>Loading...</p>;
 
-  // NEW: save only when user clicks Save
   function handleSave() {
-    const updatedPost = { ...post, body: draftBody };
+    const updatedPost = {
+      ...post,
+      body: draftBody,
+      link: draftLink,
+      image: draftImage,
+    };
+
     setPost(updatedPost);
 
     setPosts((prev) =>
       prev.map((p) => (p.id === updatedPost.id ? updatedPost : p))
     );
 
-    setIsEditing(false);
+    navigate(`/post/${post.id}`); // go back to read-only view
   }
 
-  // NEW: cancel editing
   function handleCancel() {
-    setDraftBody(post.body);
-    setIsEditing(false);
+    setDraftBody(post.body ?? "");
+    setDraftLink(post.link ?? "");
+    setDraftImage(post.image ?? "");
+    navigate(`/post/${post.id}`);
   }
-
-  if (!post) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h2>{post.title}</h2>
+    <div className="detail-page">
+      <div className="detail-card">
+        <h2>{post.title}</h2>
 
-      {!isEditing ? (
-        <>
-          <p>{post.body}</p>
-          <button type="button" onClick={() => setIsEditing(true)}>
-            Edit
-          </button>
-        </>
-      ) : (
-        <>
-          <textarea value={draftBody} onChange={handleDraftChange} />
-          <button type="button" onClick={handleSave}>
-            Save
-          </button>
-          <button type="button" onClick={handleCancel}>
-            Cancel
-          </button>
-        </>
-      )}
+        {!isEditMode ? (
+          <>
+            <p>{post.body}</p>
+
+            {post.link && (
+              <p>
+                <a href={post.link} target="_blank" rel="noopener noreferrer">
+                  View Recipe
+                </a>
+              </p>
+            )}
+
+            {post.image && (
+              <img src={post.image} alt="" className="feed-image" />
+            )}
+          </>
+        ) : (
+          <>
+            <textarea
+              value={draftBody}
+              onChange={(e) => setDraftBody(e.target.value)}
+            />
+
+            <input
+              value={draftLink}
+              onChange={(e) => setDraftLink(e.target.value)}
+              placeholder="Optional recipe link"
+            />
+
+            <input
+              value={draftImage}
+              onChange={(e) => setDraftImage(e.target.value)}
+              placeholder="Optional image URL"
+            />
+
+            <button type="button" onClick={handleSave}>
+              Save
+            </button>
+            <button type="button" onClick={handleCancel}>
+              Cancel
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }

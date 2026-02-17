@@ -4,7 +4,12 @@ import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 
-export default function AppNavbar({ onLoginClick, isLoggedIn, user, onLogout }) {
+export default function AppNavbar({
+  onLoginClick,
+  isLoggedIn,
+  user,
+  onLogout,
+}) {
   return (
     <Navbar fixed="top" expand="lg" bg="light">
       <Container fluid>
@@ -26,14 +31,18 @@ export default function AppNavbar({ onLoginClick, isLoggedIn, user, onLogout }) 
             </Nav.Link>
           </Nav>
 
-           <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center">
             {isLoggedIn ? (
               <>
                 <span className="me-2">Welcome, {user?.name}!</span>
-                <Button variant="secondary" onClick={onLogout}>Logout</Button>
+                <Button variant="secondary" onClick={onLogout}>
+                  Logout
+                </Button>
               </>
             ) : (
-              <Button variant="primary" onClick={onLoginClick}>Login</Button>
+              <Button variant="primary" onClick={onLoginClick}>
+                Login
+              </Button>
             )}
           </div>
         </Navbar.Collapse>

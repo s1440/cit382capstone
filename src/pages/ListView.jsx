@@ -21,8 +21,14 @@ function ListView({ posts, setPosts, currentUser }) {
 
               <div className="profile-post-body">{post.body}</div>
 
-              {currentUser === post.author && (
-                <button onClick={() => handleDelete(post.id)}>Delete</button>
+              {post.link && (
+                <a href={post.link} target="_blank" rel="noopener noreferrer">
+                  View Recipe
+                </a>
+              )}
+
+              {post.image && (
+                <img src={post.image} alt="" className="feed-image" />
               )}
             </div>
           ))}

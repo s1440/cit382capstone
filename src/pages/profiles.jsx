@@ -1,16 +1,12 @@
-{
-  /* component */
-}
-
 import { Link } from "react-router-dom";
 
 function Profile({ user, posts, onDeletePost }) {
   const myName = user?.name;
-  const myPosts = myName
-    ? posts.filter((p) => !p.author || p.author === myName)
-    : [];
 
-  // placeholders for now (Week 5 is fine with this)
+  // Only show posts that belong to the logged-in user
+  const myPosts = myName ? posts.filter((p) => p?.author === myName) : [];
+
+  // placeholders for now
   const following = 0;
   const followers = 0;
 
@@ -47,14 +43,23 @@ function Profile({ user, posts, onDeletePost }) {
                 <Link to={`/post/${p.id}`}>
                   <strong>{p.title}</strong>
                 </Link>
+
                 <div className="profile-post-body">{p.body}</div>
-                <button
-                  type="button"
-                  onClick={() => onDeletePost(p.id)}
-                  style={{ marginTop: "8px" }}
-                >
-                  Delete
-                </button>
+
+                {/* Edit + Delete next to each other */}
+                <div style={{ marginTop: "8px" }}>
+                  <Link to={`/post/${p.id}?edit=1`}>
+                    <button type="button">Edit</button>
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => onDeletePost(p.id)}
+                    style={{ marginLeft: "8px" }}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>

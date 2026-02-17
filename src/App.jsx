@@ -252,7 +252,7 @@ function App() {
     setLoginPassword("");
   }
 
-  function addPost({ title, body }) {
+  function addPost({ title, body, link, image }) {
     const author = user?.name ?? "Guest";
 
     const newPost = {
@@ -260,6 +260,8 @@ function App() {
       title,
       body,
       author,
+      link,
+      image,
     };
 
     setPosts((prev) => [...prev, newPost]);
@@ -314,8 +316,11 @@ function App() {
             />
           }
         />
+        <Route
+          path="/create"
+          element={<NewPost onAddPost={addPost} user={user} />}
+        />
 
-        <Route path="/create" element={<NewPost onAddPost={addPost} />} />
         <Route
           path="/post/:id"
           element={
