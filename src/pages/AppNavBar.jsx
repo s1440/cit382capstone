@@ -13,7 +13,15 @@ export default function AppNavbar({
   return (
     <Navbar fixed="top" expand="lg" bg="light">
       <Container fluid>
+        <Link to="/" className="navbar-logo">
+          <img
+            src="/logosmall.png"
+            alt="Cookn' Share logo"
+            className="nav-logo-img"
+          />
+        </Link>
         <Navbar.Brand href="/">Cookn' Share</Navbar.Brand>
+
         <Navbar.Toggle />
         <Navbar.Collapse>
           <Nav className="me-auto">

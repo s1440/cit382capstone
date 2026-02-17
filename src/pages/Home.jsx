@@ -43,6 +43,10 @@ function Home() {
     <div className="home-page">
       <h2>Welcome to Cookn' Share!</h2>
       <h5>Share and find recipes</h5>
+      <img src="/logosmall.png" alt="Delicious food" className="home-hero" />
+      <h9>Continue Scrolling</h9>
+      <h8> ⬇️</h8>
+
       <h3>Check out what's viral:</h3>
 
       <iframe

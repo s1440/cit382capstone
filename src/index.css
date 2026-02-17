@@ -285,3 +285,26 @@ button:focus-visible {
   margin-top: 10px;
   border-radius: 8px;
 }
+
+.home-hero {
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: inherit;
+}
+
+.nav-logo-img {
+  height: 40px;
+  width: auto;
+}
